@@ -13,3 +13,4 @@ Kullanýcý hangi modu seçerse, o modun simülasyonu gerçekleþtirilecektir. Kullaný
 Arayüz üzerinde, ilgili modun yoðunluðunu ayarlayacak bir 'yoðunluk ayar seviyesi' olacaktýr. Örneðin, 1. mod seçilmiþse ve ayar seviyesi en düþük seviyede ise gökyüzünde bulut olmayacaktýr. Benzer þekilde kar yoðunluðu, yaðmur yoðunluðu bu kontrol parametresi ile belirlenecektir.
 
 Projenin teslim tarihi ve projenin gerçekleþtirilmesi ile ilgili düzenlemeler (iyileþtirmeler) daha sonra belirlenecektir.
+Satir sayisi=16
