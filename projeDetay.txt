@@ -1,16 +1,15 @@
 Proje Konusu:
-Ã–nceden belirlenmiÅ£ bir manzara gÃ¶rÃ¼ntÃ¼sÃ¼nde farklÃ½ iklim koÅ£ullarÃ½nÃ½n OpenGL destekli gÃ¶sterilmesidir.
+Önceden belirlenmiş bir manzara görüntüsünde farklı iklim koşullarının OpenGL destekli gösterilmesidir.
 
-ArayÃ¼zde, 4 farklÃ½ mod olacaktÃ½r.
+Arayüzde, 4 farklı mod olacaktır.
 
-1. mod : AÃ§Ã½k
+1. mod : Açık
 2. mod : Sis
 3. mod : Kar
-4. mod : YaÄ‘mur
+4. mod : Yağmur
 
-KullanÃ½cÃ½ hangi modu seÃ§erse, o modun simÃ¼lasyonu gerÃ§ekleÅ£tirilecektir. KullanÃ½cÃ½ 3. ve 4. modu seÃ§erse ekranda YaÄ‘mur + Kar modunun gÃ¶sterilmesi beklenmektedir.
+Kullanıcı hangi modu seçerse, o modun simülasyonu gerçekleştirilecektir. Kullanıcı 3. ve 4. modu seçerse ekranda Yağmur + Kar modunun gösterilmesi beklenmektedir.
 
-ArayÃ¼z Ã¼zerinde, ilgili modun yoÄ‘unluÄ‘unu ayarlayacak bir 'yoÄ‘unluk ayar seviyesi' olacaktÃ½r. Ã–rneÄ‘in, 1. mod seÃ§ilmiÅ£se ve ayar seviyesi en dÃ¼Å£Ã¼k seviyede ise gÃ¶kyÃ¼zÃ¼nde bulut olmayacaktÃ½r. Benzer Å£ekilde kar yoÄ‘unluÄ‘u, yaÄ‘mur yoÄ‘unluÄ‘u bu kontrol parametresi ile belirlenecektir.
+Arayüz üzerinde, ilgili modun yoğunluğunu ayarlayacak bir 'yoğunluk ayar seviyesi' olacaktır. Örneğin, 1. mod seçilmişse ve ayar seviyesi en düşük seviyede ise gökyüzünde bulut olmayacaktır. Benzer şekilde kar yoğunluğu, yağmur yoğunluğu bu kontrol parametresi ile belirlenecektir.
 
-Projenin teslim tarihi ve projenin gerÃ§ekleÅ£tirilmesi ile ilgili dÃ¼zenlemeler (iyileÅ£tirmeler) daha sonra belirlenecektir.
-Satir sayisi=17
+Projenin teslim tarihi ve projenin gerçekleştirilmesi ile ilgili düzenlemeler (iyileştirmeler) daha sonra belirlenecektir.
