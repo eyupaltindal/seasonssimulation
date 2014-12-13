@@ -131,7 +131,7 @@ public class MainClassV2 extends SeasonsSimulation {
 	private int maxTextWidth;
 
 	private FPSCounter fps;
-	private File file = new  File("img/winter.jpg");
+	private File file = new  File("img/spring.jpg");
 	private static GLCanvas canvas = new GLCanvas();
 	
 	public static void main(String[] args) {
@@ -152,7 +152,7 @@ public class MainClassV2 extends SeasonsSimulation {
 
 		frame.setSize(873,699);
 		frame.setResizable(false);
-		frame.setLocation(100,100);
+		frame.setLocation(100,50);
 
 		final Animator animator = new Animator(canvas);
 		frame.addWindowListener(new WindowAdapter() {
