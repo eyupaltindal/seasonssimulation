@@ -12,4 +12,4 @@ Kullanici hangi modu seçerse, o modun simülasyonu gerçeklestirilecektir. Kullani
 
 Arayüz üzerinde, ilgili modun yogunlugunu ayarlayacak bir 'yogunluk ayar seviyesi' olacaktir. Örnegin, 1. mod seçilmisse ve ayar seviyesi en düsük seviyede ise gökyüzünde bulut olmayacaktir. Benzer sekilde kar yogunlugu, yagmur yogunlugu bu kontrol parametresi ile belirlenecektir.
 
-Projenin teslim tarihi ve projenin gerçeklestirilmesi ile ilgili düzenlemeler (iyilestirmeler) daha sonra belirlenecektir. Ne zaman peki? When? ?
+Projenin teslim tarihi ve projenin gerçeklestirilmesi ile ilgili düzenlemeler (iyilestirmeler) daha sonra belirlenecektir. Ne zaman peki? When?
