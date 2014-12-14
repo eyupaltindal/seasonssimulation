@@ -93,16 +93,9 @@ import seasonsSimulation.util.Time;
     shadow effect. */
 
 public class MainClassV3 extends SeasonsSimulation {
-	
-
-	  // Put a little physics on the text to make it look nicer
-	  private static final float INIT_ANG_VEL_MAG = 0.3f;
-	  private static final float INIT_VEL_MAG = 400.0f;
-	  private static final int   DEFAULT_DROP_SHADOW_DIST = 20;
-
-	  // Information about each piece of text
-	  private static class TextInfo {
-	    float angularVelocity;
+	// Information about each piece of text
+	private static class TextInfo {
+		float angularVelocity;
 	    Vec2f velocity;
 
 	    float angle;
@@ -123,79 +116,74 @@ public class MainClassV3 extends SeasonsSimulation {
 	    String text;
 	  }
 
-	  private final List<TextInfo> textInfo = new ArrayList<TextInfo>();
-	  private int dropShadowDistance = DEFAULT_DROP_SHADOW_DIST;
-	  private Time time;
-	  private Texture backgroundTexture;
-	  private TextRenderer renderer;
-	  private final Random random = new Random();
-	  private final GLU glu = new GLU();
-	  private int width;
-	  private int height;
 
-	  private int maxTextWidth;
-
-	  private FPSCounter fps;
-	  private static File file = null;
-	  private static Image image = null;
-	  private static BufferedImage bgImage = null;
-
-	    private static GLCanvas canvas = new GLCanvas();
-	    private static GL gl;
-	    private static JFrame frame;
+	// Put a little physics on the text to make it look nicer
+	private static final float INIT_ANG_VEL_MAG = 0.3f;
+	private static final float INIT_VEL_MAG = 400.0f;
+	private static final int   DEFAULT_DROP_SHADOW_DIST = 20;
 	
-  public static void main(String[] args) {
-	  file = new  File("img/spring.jpg");
-		bgImage = null;
-		try {
-			image = ImageIO.read(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		bgImage = toBufferedImage(image);
-    frame = new JFrame("Flying Text");
-    frame.getContentPane().setLayout(new BorderLayout());
+	private final List<TextInfo> textInfo = new ArrayList<TextInfo>();
+	private int dropShadowDistance = DEFAULT_DROP_SHADOW_DIST;
+	private Time time;
+	private Texture backgroundTexture;
+	private TextRenderer renderer;
+	private final Random random = new Random();
+	private final GLU glu = new GLU();
+	private int width;
+	private int height;
 
-    canvas = new GLCanvas();
-    final MainClassV3 mainClassV3 = new MainClassV3();
+	private int maxTextWidth;
 
-    canvas.addGLEventListener(mainClassV3);
-    frame.getContentPane().add(canvas, BorderLayout.CENTER);
-    frame.getContentPane().add(mainClassV3.buildGUI(), BorderLayout.NORTH);
+	private FPSCounter fps;
+	private File file = null;
+	private Image image = null;
+	private BufferedImage bgImage = null;
+	private String mod = "'";
+	private Color c = new Color(0,0,0);
 
-    DisplayMode mode =
-      GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+	private static JFrame frame;
+	
+	public static void main(String[] args) {
+		frame = new JFrame("Flying Text");
+		frame.getContentPane().setLayout(new BorderLayout());
 
-//    frame.setSize((int) (0.75f * mode.getWidth()),
+		GLCanvas canvas = new GLCanvas();
+		final MainClassV3 mainClassV3 = new MainClassV3();
+
+		canvas.addGLEventListener(mainClassV3);
+		frame.getContentPane().add(canvas, BorderLayout.CENTER);
+		frame.getContentPane().add(mainClassV3.buildGUI(), BorderLayout.NORTH);
+
+		DisplayMode mode = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+
+//    	frame.setSize((int) (0.75f * mode.getWidth()),
 //                  (int) (0.75f * mode.getHeight()));
-    frame.setSize(873,699);
-	frame.setResizable(false);
-	frame.setLocation(100,50);
+		frame.setSize(873,699);
+		frame.setResizable(false);
+		frame.setLocation(100,50);
 
-    final Animator animator = new Animator(canvas);
-    frame.addWindowListener(new WindowAdapter() {
-        @Override
-		public void windowClosing(WindowEvent e) {
-          // Run this on another thread than the AWT event queue to
-          // make sure the call to Animator.stop() completes before
-          // exiting
-          new Thread(new Runnable() {
-              @Override
-			public void run() {
-                animator.stop();
-                System.exit(0);
-              }
-            }).start();
-        }
-      });
-    frame.setVisible(true);
-    animator.start();
-  }
+		final Animator animator = new Animator(canvas);
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Run this on another thread than the AWT event queue to
+				// make sure the call to Animator.stop() completes before
+				// exiting
+				new Thread(new Runnable() {
+				@Override
+				public void run() {
+					animator.stop();
+					System.exit(0);
+					}
+				}).start();
+			}
+		});
+		frame.setVisible(true);
+		animator.start();
+	}
 
 
-  public Container buildGUI() {
+	public Container buildGUI() {
 		// Create gui
 		JPanel panel = new JPanel();
 		JButton button = new JButton("Spring");
@@ -245,14 +233,27 @@ public class MainClassV3 extends SeasonsSimulation {
 			}
 		});
 		panel.add(button);
+		
+		button = new JButton("Add");
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				moreText();
+			}
+		});
+		panel.add(button);
 
 		return panel;
 	}
 
 	public void spring() {
-		file = new  File("img/spring.jpg");
+		file = null;
 		bgImage = null;
 		image = null;
+		
+		file = new  File("img/spring.jpg");
+		c = new Color(0,0,0);
+		mod = "'";
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -263,9 +264,13 @@ public class MainClassV3 extends SeasonsSimulation {
 	}
 
 	public void summer() {
-		file = new File("img/summer.jpg");
+		file = null;
 		bgImage = null;
 		image = null;
+		
+		file = new File("img/summer.jpg");
+		c = new Color(0,0,0);
+		mod = "";
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -276,9 +281,13 @@ public class MainClassV3 extends SeasonsSimulation {
 	}
 
 	public void fall() {
-		file = new File("img/fall.jpg");
+		file = null;
 		bgImage = null;
 		image = null;
+		
+		file = new File("img/fall.jpg");
+		c = new Color(255,0,0);
+		mod = "#";
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -289,9 +298,13 @@ public class MainClassV3 extends SeasonsSimulation {
 	}
 
 	public void winter() {
-		file = new File("img/winter.jpg");
+		file = null;
 		bgImage = null;
 		image = null;
+		
+		file = new File("img/winter.jpg");
+		c = new Color(255,255,255);
+		mod = "*";
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -302,301 +315,297 @@ public class MainClassV3 extends SeasonsSimulation {
 	}
   
   
-  public void moreText() {
-    int numToAdd = (int) (textInfo.size() * 0.5f);
-    if (numToAdd == 0)
-      numToAdd = 1;
-    for (int i = 0; i < numToAdd; i++) {
-      textInfo.add(randomTextInfo());
-    }
-  }
+	public void moreText() {
+		int numToAdd = (int) (textInfo.size() * 0.5f);
+		if (numToAdd == 0)
+			numToAdd = 1;
+		for (int i = 0; i < numToAdd; i++) {
+			textInfo.add(randomTextInfo());
+		}
+	}
 
-  public void lessText() {
-    if (textInfo.size() == 1)
-      return;
-    int numToRemove = textInfo.size() / 3;
-    if (numToRemove == 0)
-      numToRemove = 1;
-    for (int i = 0; i < numToRemove; i++) {
-      textInfo.remove(textInfo.size() - 1);
-    }
-  }
+	public void lessText() {
+		if (textInfo.size() == 1)
+			return;
+		int numToRemove = textInfo.size() / 3;
+		if (numToRemove == 0)
+			numToRemove = 1;
+		for (int i = 0; i < numToRemove; i++) {
+			textInfo.remove(textInfo.size() - 1);
+		}
+	}
 
-  public int getDropShadowDistance() {
-    return dropShadowDistance;
-  }
+	public int getDropShadowDistance() {
+		return dropShadowDistance;
+	}
 
-  public int getMinDropShadowDistance() {
-    return 1;
-  }
+	public int getMinDropShadowDistance() {
+		return 1;
+	}
 
-  public int getMaxDropShadowDistance() {
-    return 30;
-  }
+	public int getMaxDropShadowDistance() {
+		return 30;
+	}
 
-  public void setDropShadowDistance(int dist) {
-    dropShadowDistance = dist;
-  }
+	public void setDropShadowDistance(int dist) {
+		dropShadowDistance = dist;
+	}
 
-  @Override
-public void init(GLAutoDrawable drawable) {
-    gl = drawable.getGL();
-// 		Create the background texture
-//    BufferedImage bgImage = new BufferedImage(2, 2, BufferedImage.TYPE_BYTE_GRAY);
-//    Graphics2D g = bgImage.createGraphics();
-//    g.setColor(new Color(0.3f, 0.3f, 0.3f));
-//    g.fillRect(0, 0, 2, 2);
-//    g.setColor(new Color(0.7f, 0.7f, 0.7f));
-//    g.fillRect(0, 0, 1, 1);
-//    g.fillRect(1, 1, 1, 1);
-//    g.dispose();
-    backgroundTexture = AWTTextureIO.newTexture(gl.getGLProfile(), bgImage, false);
-    backgroundTexture.bind(gl);
+	@Override
+	public void init(GLAutoDrawable drawable) {
+		GL gl = drawable.getGL();
+		file = new  File("img/spring.jpg");
+		bgImage = null;
+		try {
+			image = ImageIO.read(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bgImage = toBufferedImage(image);
+		
+		backgroundTexture = AWTTextureIO.newTexture(gl.getGLProfile(), bgImage, false);
+		backgroundTexture.bind(gl);
 
-    // Create the text renderer
-    renderer = new TextRenderer(new Font("Serif", Font.PLAIN, 72), true, true);
+		// Create the text renderer
+		renderer = new TextRenderer(new Font("Serif", Font.PLAIN, 72), true, true);
 
-    // Create the FPS counter
-    fps = new FPSCounter(drawable, 36);
+		// Create the FPS counter
+		fps = new FPSCounter(drawable, 36);
 
-    width = drawable.getSurfaceWidth();
-    height = drawable.getSurfaceHeight();
+		width = drawable.getSurfaceWidth();
+		height = drawable.getSurfaceHeight();
 
-    // Compute maximum width of text we're going to draw to avoid
-    // popping in/out at edges
-    maxTextWidth = (int) renderer.getBounds("Java 2D").getWidth();
-    maxTextWidth = Math.max(maxTextWidth, (int) renderer.getBounds("OpenGL").getWidth());
+		// Compute maximum width of text we're going to draw to avoid
+		// popping in/out at edges
+		maxTextWidth = (int) renderer.getBounds("Java 2D").getWidth();
+		maxTextWidth = Math.max(maxTextWidth, (int) renderer.getBounds("OpenGL").getWidth());
 
-    // Create random text
-    textInfo.clear();
-    for (int i = 0; i < 100; i++) {
-      textInfo.add(randomTextInfo());
-    }
+		// Create random text
+		textInfo.clear();
+		for (int i = 0; i < 100; i++) {
+			textInfo.add(randomTextInfo());
+		}
 
-    time = new SystemTime();
-    ((SystemTime) time).rebase();
+		time = new SystemTime();
+		((SystemTime) time).rebase();
 
-    // Set up properties; note we don't need the depth buffer in this demo
-    gl.glDisable(GL2.GL_DEPTH_TEST);
-    // Turn off vsync if we can
-    gl.setSwapInterval(0);
-  }
+		// Set up properties; note we don't need the depth buffer in this demo
+		gl.glDisable(GL2.GL_DEPTH_TEST);
+		// Turn off vsync if we can
+		gl.setSwapInterval(0);
+	}
 
-  @Override
-public void dispose(GLAutoDrawable drawable) {
-    backgroundTexture = null;
-    renderer = null;
-    fps = null;
-    time = null;
-  }
+	@Override
+	public void dispose(GLAutoDrawable drawable) {
+		backgroundTexture = null;
+		renderer = null;
+		fps = null;
+		time = null;
+	}
 
-  @Override
-public void display(GLAutoDrawable drawable) {
-    time.update();
+	@Override
+	public void display(GLAutoDrawable drawable) {
+		time.update();
 
-    // Update velocities and positions of all text
-    float deltaT = (float) time.deltaT();
-    Vec2f tmp = new Vec2f();
-    for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ) {
-      TextInfo info = iter.next();
+		// Update velocities and positions of all text
+		float deltaT = (float) time.deltaT();
+		Vec2f tmp = new Vec2f();
+		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
+			TextInfo info = iter.next();
 
-      // Randomize things a little bit at run time
-      if (random.nextInt(1000) == 0) {
-        info.angularVelocity = INIT_ANG_VEL_MAG * (randomAngle() - 180);
-        info.velocity = randomVelocityVec2f(INIT_VEL_MAG, INIT_VEL_MAG);
-      }
+			// Randomize things a little bit at run time
+			if (random.nextInt(1000) == 0) {
+				info.angularVelocity = INIT_ANG_VEL_MAG * (randomAngle() - 180);
+				info.velocity = randomVelocityVec2f(INIT_VEL_MAG, INIT_VEL_MAG);
+			}
 
-      // Now update angles and positions
-      info.angle += info.angularVelocity * deltaT;
-      tmp.set(info.velocity);
-      tmp.scale(deltaT);
-      info.position.add(tmp);
+			// Now update angles and positions
+			info.angle += info.angularVelocity * deltaT;
+			tmp.set(info.velocity);
+			tmp.scale(deltaT);
+			info.position.add(tmp);
 
-      // Update color
-      info.curTime += deltaT;
-      if (info.curTime > 2 * Math.PI) {
-        info.curTime -= 2 * Math.PI;
-      }
-      int rgb = Color.HSBtoRGB(info.h,
-                               (float) (0.5 * (1 + Math.sin(info.curTime)) * info.s),
-                               info.v);
-      info.r = ((rgb >> 16) & 0xFF) / 255.0f;
-      info.g = ((rgb >>  8) & 0xFF) / 255.0f;
-      info.b = ( rgb        & 0xFF) / 255.0f;
+			// Update color
+			info.curTime += deltaT;
+			if (info.curTime > 2 * Math.PI) {
+				info.curTime -= 2 * Math.PI;
+			}
+			int rgb = Color.HSBtoRGB(info.h,
+									(float) (0.5 * (1 + Math.sin(info.curTime)) * info.s),
+									info.v);
+			info.r = ((rgb >> 16) & 0xFF) / 255.0f;
+			info.g = ((rgb >>  8) & 0xFF) / 255.0f;
+			info.b = ( rgb        & 0xFF) / 255.0f;
 
-      // Wrap angles and positions
-      if (info.angle < 0) {
-        info.angle += 360;
-      } else if (info.angle > 360) {
-        info.angle -= 360;
-      }
-      // Use maxTextWidth to avoid popping in/out at edges
-      // Would be better to do oriented bounding rectangle computation
-      if (info.position.x() < -maxTextWidth) {
-        info.position.setX(info.position.x() + drawable.getSurfaceWidth() + 2 * maxTextWidth);
-      } else if (info.position.x() > drawable.getSurfaceWidth() + maxTextWidth) {
-        info.position.setX(info.position.x() - drawable.getSurfaceWidth() - 2 * maxTextWidth);
-      }
-      if (info.position.y() < -maxTextWidth) {
-        info.position.setY(info.position.y() + drawable.getSurfaceHeight() + 2 * maxTextWidth);
-      } else if (info.position.y() > drawable.getSurfaceHeight() + maxTextWidth) {
-        info.position.setY(info.position.y() - drawable.getSurfaceHeight() - 2 * maxTextWidth);
-      }
-    }
+			// Wrap angles and positions
+			if (info.angle < 0) {
+				info.angle += 360;
+			} else if (info.angle > 360) {
+				info.angle -= 360;
+			}
+			// Use maxTextWidth to avoid popping in/out at edges
+			// Would be better to do oriented bounding rectangle computation
+			if (info.position.x() < -maxTextWidth) {
+				info.position.setX(info.position.x() + drawable.getSurfaceWidth() + 2 * maxTextWidth);
+			} else if (info.position.x() > drawable.getSurfaceWidth() + maxTextWidth) {
+				info.position.setX(info.position.x() - drawable.getSurfaceWidth() - 2 * maxTextWidth);
+			}
+			if (info.position.y() < -maxTextWidth) {
+				info.position.setY(info.position.y() + drawable.getSurfaceHeight() + 2 * maxTextWidth);
+			} else if (info.position.y() > drawable.getSurfaceHeight() + maxTextWidth) {
+				info.position.setY(info.position.y() - drawable.getSurfaceHeight() - 2 * maxTextWidth);
+			}
+		}
 
-    GL2 gl = drawable.getGL().getGL2();
-    gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
-    gl.glMatrixMode(GL2.GL_PROJECTION);
-    gl.glLoadIdentity();
-    glu.gluOrtho2D(0, drawable.getSurfaceWidth(), 0, drawable.getSurfaceHeight());
-    gl.glMatrixMode(GL2.GL_MODELVIEW);
-    gl.glLoadIdentity();
-    
-    
-    // Draw the background texture
-    backgroundTexture.enable(gl);
-    backgroundTexture.bind(gl);
-    TextureCoords coords = backgroundTexture.getImageTexCoords();
-    int w = drawable.getSurfaceWidth();
-    int h = drawable.getSurfaceHeight();
-    float fw = w / 100.0f;
-    float fh = h / 100.0f;
-    gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
-    gl.glBegin(GL2.GL_QUADS);
-    gl.glTexCoord2f(coords.left(),coords.bottom());
-    gl.glVertex3f(0, 0, 0);
-    gl.glTexCoord2f(coords.right(),coords.bottom());
-    gl.glVertex3f(w, 0, 0);
-    gl.glTexCoord2f(coords.right(),coords.top());
-    gl.glVertex3f(w, h, 0);
-    gl.glTexCoord2f(coords.left(),coords.top());
-    gl.glVertex3f(0, h, 0);
-    gl.glEnd();
-    backgroundTexture.disable(gl);
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glLoadIdentity();
+		glu.gluOrtho2D(0, drawable.getSurfaceWidth(), 0, drawable.getSurfaceHeight());
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		
+		
+		// Draw the background texture
+		backgroundTexture.enable(gl);
+		backgroundTexture.bind(gl);
+		TextureCoords coords = backgroundTexture.getImageTexCoords();
+		int w = drawable.getSurfaceWidth();
+		int h = drawable.getSurfaceHeight();
+		float fw = w / 100.0f;
+		float fh = h / 100.0f;
+		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(coords.left(),coords.bottom());
+		gl.glVertex3f(0, 0, 0);
+		gl.glTexCoord2f(coords.right(),coords.bottom());
+		gl.glVertex3f(w, 0, 0);
+		gl.glTexCoord2f(coords.right(),coords.top());
+		gl.glVertex3f(w, h, 0);
+		gl.glTexCoord2f(coords.left(),coords.top());
+		gl.glVertex3f(0, h, 0);
+		gl.glEnd();
+		backgroundTexture.disable(gl);
 
-    // Render all text
-    renderer.beginRendering(drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
+		// Render all text
+		renderer.beginRendering(drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
 
-    // Note we're doing some slightly fancy stuff to position the text.
-    // We tell the text renderer to render the text at the origin, and
-    // manipulate the modelview matrix to put the text where we want.
+		// Note we're doing some slightly fancy stuff to position the text.
+		// We tell the text renderer to render the text at the origin, and
+		// manipulate the modelview matrix to put the text where we want.
 
-    gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 
-    // First render drop shadows
-    renderer.setColor(0, 0, 0, 0.5f);
-    for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ) {
-      TextInfo info = iter.next();
-      gl.glLoadIdentity();
-      gl.glTranslatef(info.position.x() + dropShadowDistance,
-                      info.position.y() - dropShadowDistance,
-                      0);
-      gl.glRotatef(info.angle, 0, 0, 1);
-      renderer.draw(info.text, 0, 0);
-      // We need to call flush() only because we're modifying the modelview matrix
-      renderer.flush();
-    }
+		// First render drop shadows
+		renderer.setColor(0, 0, 0, 0.5f);
+		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
+			TextInfo info = iter.next();
+			gl.glLoadIdentity();
+			gl.glTranslatef(info.position.x() + dropShadowDistance,
+							info.position.y() - dropShadowDistance,
+							0);
+			gl.glRotatef(info.angle, 0, 0, 1);
+			renderer.draw(info.text, 0, 0);
+			// We need to call flush() only because we're modifying the modelview matrix
+			renderer.flush();
+		}
 
-    // Now render the actual text
-    for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ) {
-      TextInfo info = iter.next();
-      gl.glLoadIdentity();
-      gl.glTranslatef(info.position.x(),
-                      info.position.y(),
-                      0);
-      gl.glRotatef(info.angle, 0, 0, 1);
-      renderer.setColor(info.r, info.g, info.b, 1);
-      renderer.draw(info.text, 0, 0);
-      // We need to call flush() only because we're modifying the modelview matrix
-      renderer.flush();
-    }
+		// Now render the actual text
+		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
+			TextInfo info = iter.next();
+			gl.glLoadIdentity();
+			gl.glTranslatef(info.position.x(),
+							info.position.y(),
+							0);
+			gl.glRotatef(info.angle, 0, 0, 1);
+			renderer.setColor(info.r, info.g, info.b, 1);
+			renderer.draw(info.text, 0, 0);
+			// We need to call flush() only because we're modifying the modelview matrix
+			renderer.flush();
+		}
 
-    renderer.endRendering();
+		renderer.endRendering();
 
-    // Use the FPS renderer last to render the FPS
-    fps.draw();
-  }
+		// Use the FPS renderer last to render the FPS
+		fps.draw();
+	}
 
-  @Override
-public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-    this.width = width;
-    this.height = height;
-    backgroundTexture = null;
-    backgroundTexture = AWTTextureIO.newTexture(gl.getGLProfile(), bgImage, false);
-    System.out.println("Frame Size ++, --");
-	frame.setSize(873,699);
-  }
+	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		this.width = width;
+		this.height = height;
+		GL gl = drawable.getGL();
+		backgroundTexture = null;
+		backgroundTexture = AWTTextureIO.newTexture(gl.getGLProfile(), bgImage, false);
+		System.out.println("Frame Size ++, --");
+		frame.setSize(873,699);
+	}
 
-  public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {}
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+	}
 
-  //----------------------------------------------------------------------
-  // Internals only below this point
-  //
+	private TextInfo randomTextInfo() {
+		TextInfo info = new TextInfo();
+		info.text = mod;
+		info.angle = randomAngle();
+		info.position = randomVec2f(width, height);
 
-  private TextInfo randomTextInfo() {
-    TextInfo info = new TextInfo();
-    info.text = randomString();
-    info.angle = randomAngle();
-    info.position = randomVec2f(width, height);
+		info.angularVelocity = INIT_ANG_VEL_MAG * (randomAngle() - 180);
+		info.velocity = randomVelocityVec2f(INIT_VEL_MAG, INIT_VEL_MAG);
+		
+//		Color c = randomColor();
+		float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 
-    info.angularVelocity = INIT_ANG_VEL_MAG * (randomAngle() - 180);
-    info.velocity = randomVelocityVec2f(INIT_VEL_MAG, INIT_VEL_MAG);
+//		float[] hsb = Color.RGBtoHSB(255, 255, 255, null);
+		info.h = hsb[0];
+		info.s = hsb[1];
+		info.v = hsb[2];
+		info.curTime = (float) (2 * Math.PI * random.nextFloat());
+		return info;
+	}
 
-    Color c = randomColor();
-    float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-    info.h = hsb[0];
-    info.s = hsb[1];
-    info.v = hsb[2];
-    info.curTime = (float) (2 * Math.PI * random.nextFloat());
-    return info;
-  }
+//	private String randomString() {
+//		switch (random.nextInt(3)) {
+//			case 0:
+//				return "A";
+//			case 1:
+//				return "B";
+//			default:
+//				return "C";
+//		}
+//	}
 
-  private String randomString() {
-    switch (random.nextInt(3)) {
-      case 0:
-        return "A";
-      case 1:
-        return "B";
-      default:
-        return "C";
-    }
-  }
+	private float randomAngle() {
+		return 360.0f * random.nextFloat();
+	}
 
-  private float randomAngle() {
-    return 360.0f * random.nextFloat();
-  }
+	private Vec2f randomVec2f(float x, float y) {
+		return new Vec2f(x * random.nextFloat(),y * random.nextFloat());
+	}
 
-  private Vec2f randomVec2f(float x, float y) {
-    return new Vec2f(x * random.nextFloat(),
-                     y * random.nextFloat());
-  }
+	private Vec2f randomVelocityVec2f(float x, float y) {
+		return new Vec2f(x * (random.nextFloat() - 0.5f),y * (random.nextFloat() - 0.5f));
+	}
 
-  private Vec2f randomVelocityVec2f(float x, float y) {
-    return new Vec2f(x * (random.nextFloat() - 0.5f),
-                     y * (random.nextFloat() - 0.5f));
-  }
-
-  private Color randomColor() {
-    // Get a bright and saturated color
-    float r = 0;
-    float g = 0;
-    float b = 0;
-    float s = 0;
-    do {
-      r = random.nextFloat();
-      g = random.nextFloat();
-      b = random.nextFloat();
-
-      float[] hsb = Color.RGBtoHSB((int) (255.0f * r),
-                                   (int) (255.0f * g),
-                                   (int) (255.0f * b), null);
-      s = hsb[1];
-    } while ((r < 0.8f && g < 0.8f && b < 0.8f) ||
-             s < 0.8f);
-    return new Color(r, g, b);
-  }
+//	private Color randomColor() {
+//		// Get a bright and saturated color
+//		float r = 255;
+//		float g = 255;
+//		float b = 255;
+//		float s = 0;
+//		do{
+//			r = random.nextFloat();
+//			g = random.nextFloat();
+//			b = random.nextFloat();
+//
+//			float[] hsb = Color.RGBtoHSB((int) (255.0f * r), (int) (255.0f * g),(int) (255.0f * b), null);
+//			s = hsb[1];
+//		} while ((r < 0.8f && g < 0.8f && b < 0.8f) || s < 0.8f);
+//		return new Color(r, g, b);
+//	}
   
-	public static BufferedImage toBufferedImage(Image img){
+	public BufferedImage toBufferedImage(Image img){
 		if (img instanceof BufferedImage){
 			return (BufferedImage) img;
 		}
