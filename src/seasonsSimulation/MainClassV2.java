@@ -133,6 +133,7 @@ public class MainClassV2 extends SeasonsSimulation {
 	private FPSCounter fps;
 	private File file = new  File("img/spring.jpg");
 	private static GLCanvas canvas = new GLCanvas();
+	private final static Animator animator = new Animator(canvas);
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Seasons Simulation || KOU Computer Graphics");
@@ -154,7 +155,7 @@ public class MainClassV2 extends SeasonsSimulation {
 		frame.setResizable(false);
 		frame.setLocation(100,50);
 
-		final Animator animator = new Animator(canvas);
+//		final Animator animator = new Animator(canvas);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -171,7 +172,7 @@ public class MainClassV2 extends SeasonsSimulation {
 			}
 		});
 		frame.setVisible(true);
-		animator.start();
+//		animator.start();
 	}
   
 	public Container buildGUI() {
@@ -231,6 +232,7 @@ public class MainClassV2 extends SeasonsSimulation {
 
 	public void spring() {
 		file = new File("img/spring.jpg");
+		animator.start();
 	}
 
 	public void summer() {
@@ -298,14 +300,15 @@ public class MainClassV2 extends SeasonsSimulation {
 	public void display(GLAutoDrawable drawable) {
 
 		Image image = null;
+		BufferedImage bgImage = null;
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-		BufferedImage bgImage = toBufferedImage(image);
+		
+		bgImage = toBufferedImage(image);
 
 		// Create the text renderer
 		renderer = new TextRenderer(new Font("Serif", Font.PLAIN, 12), true, true);
@@ -467,10 +470,6 @@ public class MainClassV2 extends SeasonsSimulation {
 
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
 	}
-
-	//----------------------------------------------------------------------
-	// Internals only below this point
-	//
 
 	public static BufferedImage toBufferedImage(Image img){
 		if (img instanceof BufferedImage){
