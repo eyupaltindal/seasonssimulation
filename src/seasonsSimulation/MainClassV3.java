@@ -251,9 +251,14 @@ public class MainClassV3 extends SeasonsSimulation {
 		bgImage = null;
 		image = null;
 		
-		file = new  File("img/spring.jpg");
 		c = new Color(0,0,0);
 		mod = "'";
+		textInfo.clear();
+		for (int i = 0; i < 100; i++) {
+			textInfo.add(randomTextInfo());
+		}
+
+		file = new  File("img/spring.jpg");
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -268,9 +273,14 @@ public class MainClassV3 extends SeasonsSimulation {
 		bgImage = null;
 		image = null;
 		
-		file = new File("img/summer.jpg");
 		c = new Color(0,0,0);
 		mod = "";
+		textInfo.clear();
+		for (int i = 0; i < 100; i++) {
+			textInfo.add(randomTextInfo());
+		}
+
+		file = new File("img/summer.jpg");
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -285,9 +295,14 @@ public class MainClassV3 extends SeasonsSimulation {
 		bgImage = null;
 		image = null;
 		
-		file = new File("img/fall.jpg");
 		c = new Color(255,0,0);
 		mod = "#";
+		textInfo.clear();
+		for (int i = 0; i < 100; i++) {
+			textInfo.add(randomTextInfo());
+		}
+		
+		file = new File("img/fall.jpg");
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
@@ -302,9 +317,14 @@ public class MainClassV3 extends SeasonsSimulation {
 		bgImage = null;
 		image = null;
 		
-		file = new File("img/winter.jpg");
 		c = new Color(255,255,255);
 		mod = "*";
+		textInfo.clear();
+		for (int i = 0; i < 100; i++) {
+			textInfo.add(randomTextInfo());
+		}
+		
+		file = new File("img/winter.jpg");
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
