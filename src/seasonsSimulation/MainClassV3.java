@@ -120,10 +120,14 @@ public class MainClassV3 extends SeasonsSimulation {
 	// Put a little physics on the text to make it look nicer
 	private static final float INIT_ANG_VEL_MAG = 0.3f;
 	private static final float INIT_VEL_MAG = 400.0f;
-	private static final int   DEFAULT_DROP_SHADOW_DIST = 20;
+//	private static final int   DEFAULT_DROP_SHADOW_DIST = 20;
 	
 	private final List<TextInfo> textInfo = new ArrayList<TextInfo>();
-	private int dropShadowDistance = DEFAULT_DROP_SHADOW_DIST;
+//	private int dropShadowDistance = DEFAULT_DROP_SHADOW_DIST;
+	private int sliderDefaultValue = 5;
+	private int sliderMinValue = 1;
+	private int sliderMaxValue = 10;
+	private int sliderValue = sliderDefaultValue;
 	private Time time;
 	private Texture backgroundTexture;
 	private TextRenderer renderer;
@@ -185,11 +189,14 @@ public class MainClassV3 extends SeasonsSimulation {
 	public Container buildGUI() {
 		// Butonlar olusturuluyor
 		JPanel panel = new JPanel();
+		final JSlider slider = new JSlider(JSlider.HORIZONTAL, sliderMinValue, sliderMaxValue, sliderDefaultValue);
+		
 		JButton button = new JButton("Spring");
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				spring();
+				slider.setValue(sliderDefaultValue);
 			}
 		});
 		panel.add(button);
@@ -199,18 +206,26 @@ public class MainClassV3 extends SeasonsSimulation {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				summer();
+				slider.setValue(sliderDefaultValue);
 			}
 		});
 		panel.add(button);
 
-		final JSlider slider = new JSlider(JSlider.HORIZONTAL,
-										   getMinDropShadowDistance(),
-										   getMaxDropShadowDistance(),
-										   getDropShadowDistance());
 		slider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-			  setDropShadowDistance(slider.getValue());
+				if(slider.getValue() > sliderValue){
+					//art
+					moreItem();
+					sliderValue = slider.getValue();
+					System.out.println(slider.getValue());
+				}else if (slider.getValue() < sliderValue){
+					//azal
+					lessItem();
+					sliderValue = slider.getValue();
+					System.out.println(slider.getValue());
+				}
+				
 			}
 		});
 		panel.add(slider);
@@ -220,6 +235,7 @@ public class MainClassV3 extends SeasonsSimulation {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fall();
+				slider.setValue(sliderDefaultValue);
 			}
 		});
 		panel.add(button);
@@ -229,15 +245,7 @@ public class MainClassV3 extends SeasonsSimulation {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				winter();
-			}
-		});
-		panel.add(button);
-		
-		button = new JButton("Add");
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				moreText();
+				slider.setValue(sliderDefaultValue);
 			}
 		});
 		panel.add(button);
@@ -265,6 +273,7 @@ public class MainClassV3 extends SeasonsSimulation {
 		}
 		bgImage = toBufferedImage(image);
 		frame.setSize(873,700);
+		
 	}
 
 	public void summer() {
@@ -334,7 +343,7 @@ public class MainClassV3 extends SeasonsSimulation {
 	}
   
   
-	public void moreText() {
+	public void moreItem() {
 		int numToAdd = (int) (textInfo.size() * 0.5f);
 		if (numToAdd == 0)
 			numToAdd = 1;
@@ -343,7 +352,7 @@ public class MainClassV3 extends SeasonsSimulation {
 		}
 	}
 
-	public void lessText() {
+	public void lessItem() {
 		if (textInfo.size() == 1)
 			return;
 		int numToRemove = textInfo.size() / 3;
@@ -354,21 +363,21 @@ public class MainClassV3 extends SeasonsSimulation {
 		}
 	}
 
-	public int getDropShadowDistance() {
-		return dropShadowDistance;
-	}
+//	public int getDropShadowDistance() {
+//		return dropShadowDistance;
+//	}
 
-	public int getMinDropShadowDistance() {
-		return 1;
-	}
+//	public int getMinDropShadowDistance() {
+//		return 1;
+//	}
 
-	public int getMaxDropShadowDistance() {
-		return 30;
-	}
+//	public int getMaxDropShadowDistance() {
+//		return 40;
+//	}
 
-	public void setDropShadowDistance(int dist) {
-		dropShadowDistance = dist;
-	}
+//	public void setDropShadowDistance(int dist) {
+//		dropShadowDistance = dist;
+//	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
