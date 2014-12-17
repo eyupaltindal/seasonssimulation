@@ -44,10 +44,10 @@ import seasonsSimulation.linalg.Vec2f;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.DisplayMode;
+//import java.awt.DisplayMode;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
+//import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -65,7 +65,7 @@ import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLProfile;
+//import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JButton;
@@ -154,8 +154,7 @@ public class MainClassV3 extends SeasonsSimulation {
 		frame.getContentPane().add(canvas, BorderLayout.CENTER);
 		frame.getContentPane().add(mainClassV3.buildGUI(), BorderLayout.NORTH);
 
-		DisplayMode mode = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
-
+//		DisplayMode mode = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
 //    	frame.setSize((int) (0.75f * mode.getWidth()),
 //                  (int) (0.75f * mode.getHeight()));
 		frame.setSize(873,699);
@@ -184,7 +183,7 @@ public class MainClassV3 extends SeasonsSimulation {
 
 
 	public Container buildGUI() {
-		// Create gui
+		// Butonlar olusturuluyor
 		JPanel panel = new JPanel();
 		JButton button = new JButton("Spring");
 		button.addActionListener(new ActionListener() {
@@ -493,8 +492,8 @@ public class MainClassV3 extends SeasonsSimulation {
 		TextureCoords coords = backgroundTexture.getImageTexCoords();
 		int w = drawable.getSurfaceWidth();
 		int h = drawable.getSurfaceHeight();
-		float fw = w / 100.0f;
-		float fh = h / 100.0f;
+//		float fw = w / 100.0f;
+//		float fh = h / 100.0f;
 		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(coords.left(),coords.bottom());
@@ -518,18 +517,18 @@ public class MainClassV3 extends SeasonsSimulation {
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 
 		// First render drop shadows
-		renderer.setColor(0, 0, 0, 0.5f);
-		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
-			TextInfo info = iter.next();
-			gl.glLoadIdentity();
-			gl.glTranslatef(info.position.x() + dropShadowDistance,
-							info.position.y() - dropShadowDistance,
-							0);
-			gl.glRotatef(info.angle, 0, 0, 1);
-			renderer.draw(info.text, 0, 0);
-			// We need to call flush() only because we're modifying the modelview matrix
-			renderer.flush();
-		}
+//		renderer.setColor(0, 0, 0, 0.5f);
+//		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
+//			TextInfo info = iter.next();
+//			gl.glLoadIdentity();
+//			gl.glTranslatef(info.position.x() + dropShadowDistance,
+//							info.position.y() - dropShadowDistance,
+//							0);
+//			gl.glRotatef(info.angle, 0, 0, 1);
+//			renderer.draw(info.text, 0, 0);
+//			// We need to call flush() only because we're modifying the modelview matrix
+//			renderer.flush();
+//		}
 
 		// Now render the actual text
 		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
