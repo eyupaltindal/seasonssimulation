@@ -282,7 +282,7 @@ public class MainClassV4 extends SeasonsSimulation {
 		renderer = new TextRenderer(font, true, true);
 		
 		c = new Color(255,0,0);
-		mod = "B";
+		//mod = "B";
 		textInfo.clear();
 		for (int i = 0; i < itemCount - 100 ; i++) {
 			textInfo.add(randomTextInfo());
@@ -535,14 +535,15 @@ public class MainClassV4 extends SeasonsSimulation {
 			info.text = randomString();
 			info.angle = randomAngle();
 			info.position = randomVec2f(width, height);
+			info.velocity = randomVelocityVec2f(400f, 400f);
 		}else{
 			info.text = mod;
 			info.angle = itemPAngle;
 			info.position = randomVec2f(width, height);
+			info.velocity = new Vec2f(itemAngle,itemVelocity);
 		}
 
 		info.angularVelocity = 0;
-		info.velocity = new Vec2f(itemAngle,itemVelocity);
 		
 		float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 		info.h = hsb[0];
