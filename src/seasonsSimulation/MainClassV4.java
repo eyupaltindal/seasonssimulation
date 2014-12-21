@@ -1,3 +1,42 @@
+/*
+ * Copyright (c) 2006 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ * - Redistribution of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistribution in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ * Neither the name of Sun Microsystems, Inc. or the names of
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * This software is provided "AS IS," without a warranty of any kind. ALL
+ * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES,
+ * INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN
+ * MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL NOT BE LIABLE FOR
+ * ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR
+ * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR
+ * ITS LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR
+ * DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE
+ * DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY,
+ * ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
+ * SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+ *
+ * You acknowledge that this software is not designed or intended for use
+ * in the design, construction, operation or maintenance of any nuclear
+ * facility.
+ *
+ * Sun gratefully acknowledges that this software was originally authored
+ * and developed by Kenneth Bradley Russell and Christopher John Kline.
+ */
+
 package seasonsSimulation;
 
 import seasonsSimulation.linalg.Vec2f;
@@ -53,7 +92,7 @@ import seasonsSimulation.util.Time;
     to do animated translated and rotated text as well as a drop
     shadow effect. */
 
-public class MainClassV3 extends SeasonsSimulation {
+public class MainClassV4 extends SeasonsSimulation {
 	// Information about each piece of text
 	private static class TextInfo {
 		float angularVelocity;
@@ -113,11 +152,11 @@ public class MainClassV3 extends SeasonsSimulation {
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		GLCanvas canvas = new GLCanvas();
-		final MainClassV3 mainClassV3 = new MainClassV3();
+		final MainClassV4 mainClassV4 = new MainClassV4();
 
-		canvas.addGLEventListener(mainClassV3);
+		canvas.addGLEventListener(mainClassV4);
 		frame.getContentPane().add(canvas, BorderLayout.CENTER);
-		frame.getContentPane().add(mainClassV3.buildGUI(), BorderLayout.NORTH);
+		frame.getContentPane().add(mainClassV4.buildGUI(), BorderLayout.NORTH);
 
 //		DisplayMode mode = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
 //    	frame.setSize((int) (0.75f * mode.getWidth()),
@@ -404,11 +443,12 @@ public class MainClassV3 extends SeasonsSimulation {
 			TextInfo info = iter.next();
 
 			// Randomize things a little bit at run time
+			/*
 			if (random.nextInt(1000) == 0) {
 				info.angularVelocity = INIT_ANG_VEL_MAG * (randomAngle() - 180);
 				info.velocity = randomVelocityVec2f(INIT_VEL_MAG, INIT_VEL_MAG);
 			}
-
+*/
 			// Now update angles and positions
 			info.angle += info.angularVelocity * deltaT;
 			tmp.set(info.velocity);
@@ -435,15 +475,16 @@ public class MainClassV3 extends SeasonsSimulation {
 			}
 			// Use maxTextWidth to avoid popping in/out at edges
 			// Would be better to do oriented bounding rectangle computation
-			if (info.position.x() < -maxTextWidth) {
-				info.position.setX(info.position.x() + drawable.getSurfaceWidth() + 2 * maxTextWidth);
-			} else if (info.position.x() > drawable.getSurfaceWidth() + maxTextWidth) {
-				info.position.setX(info.position.x() - drawable.getSurfaceWidth() - 2 * maxTextWidth);
+			
+			if (info.position.x() < -10) {
+				info.position.setX(info.position.x() + drawable.getSurfaceWidth() + 0.9f * 500);
+			} else if (info.position.x() > drawable.getSurfaceWidth() + 500) {
+				info.position.setX(info.position.x() - drawable.getSurfaceWidth() - 0.9f * 500);
 			}
-			if (info.position.y() < -maxTextWidth) {
-				info.position.setY(info.position.y() + drawable.getSurfaceHeight() + 2 * maxTextWidth);
-			} else if (info.position.y() > drawable.getSurfaceHeight() + maxTextWidth) {
-				info.position.setY(info.position.y() - drawable.getSurfaceHeight() - 2 * maxTextWidth);
+			if (info.position.y() < -50) {
+				info.position.setY(info.position.y() + drawable.getSurfaceHeight() + 0.9f * 50);
+			} else if (info.position.y() > drawable.getSurfaceHeight() + 50) {
+				info.position.setY(info.position.y() - drawable.getSurfaceHeight() - 0.9f * 50);
 			}
 		}
 
@@ -540,7 +581,7 @@ public class MainClassV3 extends SeasonsSimulation {
 		info.angle = randomAngle();
 		info.position = randomVec2f(width, height);
 
-		info.angularVelocity = INIT_ANG_VEL_MAG * (randomAngle() - 180);
+		info.angularVelocity = 0;//INIT_ANG_VEL_MAG * (randomAngle() - 180);
 		info.velocity = randomVelocityVec2f(INIT_VEL_MAG, INIT_VEL_MAG);
 		
 //		Color c = randomColor();
@@ -566,7 +607,8 @@ public class MainClassV3 extends SeasonsSimulation {
 //	}
 
 	private float randomAngle() {
-		return 360.0f * random.nextFloat();
+		return 0;
+		//return 360.0f * random.nextFloat();
 	}
 
 	private Vec2f randomVec2f(float x, float y) {
@@ -574,7 +616,9 @@ public class MainClassV3 extends SeasonsSimulation {
 	}
 
 	private Vec2f randomVelocityVec2f(float x, float y) {
-		return new Vec2f(x * (random.nextFloat() - 0.5f),y * (random.nextFloat() - 0.5f));
+		//return new Vec2f(x * (random.nextFloat() - 0.5f),y * (random.nextFloat() - 0.5f));
+		
+		return new Vec2f(0,-100);
 	}
 
 //	private Color randomColor() {
