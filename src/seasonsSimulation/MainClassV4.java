@@ -1,54 +1,11 @@
-/*
- * Copyright (c) 2006 Sun Microsystems, Inc. All Rights Reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * - Redistribution of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- *
- * - Redistribution in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the distribution.
- *
- * Neither the name of Sun Microsystems, Inc. or the names of
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * This software is provided "AS IS," without a warranty of any kind. ALL
- * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES,
- * INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN
- * MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL NOT BE LIABLE FOR
- * ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR
- * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR
- * ITS LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR
- * DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE
- * DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY,
- * ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
- * SUN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * You acknowledge that this software is not designed or intended for use
- * in the design, construction, operation or maintenance of any nuclear
- * facility.
- *
- * Sun gratefully acknowledges that this software was originally authored
- * and developed by Kenneth Bradley Russell and Christopher John Kline.
- */
-
 package seasonsSimulation;
-
-import seasonsSimulation.linalg.Vec2f;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-//import java.awt.DisplayMode;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
-//import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +24,6 @@ import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-//import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JButton;
@@ -76,16 +33,16 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import seasonsSimulation.common.SeasonsSimulation;
+import seasonsSimulation.linalg.Vec2f;
+import seasonsSimulation.util.SystemTime;
+import seasonsSimulation.util.Time;
+
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
-
-import seasonsSimulation.common.SeasonsSimulation;
-import seasonsSimulation.util.FPSCounter;
-import seasonsSimulation.util.SystemTime;
-import seasonsSimulation.util.Time;
 
 
 
@@ -117,14 +74,8 @@ public class MainClassV4 extends SeasonsSimulation {
 	    String text;
 	  }
 
-
-	// Put a little physics on the text to make it look nicer
-//	private static final float INIT_ANG_VEL_MAG = 0.3f;
-//	private static final float INIT_VEL_MAG = 400.0f;
-//	private static final int   DEFAULT_DROP_SHADOW_DIST = 20;
 	
 	private final List<TextInfo> textInfo = new ArrayList<TextInfo>();
-//	private int dropShadowDistance = DEFAULT_DROP_SHADOW_DIST;
 	private int sliderDefaultValue = 5;
 	private int sliderMinValue = 1;
 	private int sliderMaxValue = 10;
@@ -136,27 +87,21 @@ public class MainClassV4 extends SeasonsSimulation {
 	private final GLU glu = new GLU();
 	private int width;
 	private int height;
-
-	//private int maxTextWidth;
-
-	private FPSCounter fps;
 	private File file = null;
 	private Image image = null;
 	private BufferedImage bgImage = null;
 	private String mod = "l";
 	private Color c = new Color(150,150,150);
-	
 	private int itemCount = 200;
 	private int itemAngle = -50;
 	private int itemVelocity = -300;
 	private int itemPAngle = -10;
 	private static Font font;
-
+	private String seasons = "spring";
 	private static JFrame frame;
 	
-	
 	public static void main(String[] args) {
-		frame = new JFrame("Kocaeli Üniversitesi BLM407 Bilgisayar Grafikleri");
+		frame = new JFrame("Kocaeli Universitesi | BLM407 Bilgisayar Grafikleri");
 		frame.getContentPane().setLayout(new BorderLayout());
 		font = new Font("Arial", Font.PLAIN, 24);
 
@@ -167,9 +112,6 @@ public class MainClassV4 extends SeasonsSimulation {
 		frame.getContentPane().add(canvas, BorderLayout.CENTER);
 		frame.getContentPane().add(mainClassV4.buildGUI(), BorderLayout.NORTH);
 
-//		DisplayMode mode = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
-//    	frame.setSize((int) (0.75f * mode.getWidth()),
-//                  (int) (0.75f * mode.getHeight()));
 		frame.setSize(873,699);
 		frame.setResizable(false);
 		frame.setLocation(100,50);
@@ -193,7 +135,6 @@ public class MainClassV4 extends SeasonsSimulation {
 		frame.setVisible(true);
 		animator.start();
 	}
-
 
 	public Container buildGUI() {
 		// Butonlar olusturuluyor
@@ -267,15 +208,17 @@ public class MainClassV4 extends SeasonsSimulation {
 	}
 
 	public void spring() {
+		seasons = "spring";
 		file = null;
 		bgImage = null;
 		image = null;
 		itemAngle = -50;
 		itemVelocity = -300;
 		itemPAngle = -10;
-		
+		font = new Font("Arial", Font.PLAIN, 24);
+		renderer = new TextRenderer(font, true, true);
 		c = new Color(150,150,150);
-		mod = "ý";
+		mod = "l";
 		textInfo.clear();
 		for (int i = 0; i < itemCount; i++) {
 			textInfo.add(randomTextInfo());
@@ -293,12 +236,15 @@ public class MainClassV4 extends SeasonsSimulation {
 	}
 
 	public void summer() {
+		seasons = "summer";
 		file = null;
 		bgImage = null;
 		image = null;
 		itemAngle = 0;
 		itemVelocity = -300;
 		itemPAngle = 0;
+		font = new Font("Arial", Font.PLAIN, 24);
+		renderer = new TextRenderer(font, true, true);
 		
 		c = new Color(0,0,0);
 		mod = "";
@@ -318,6 +264,7 @@ public class MainClassV4 extends SeasonsSimulation {
 	}
 
 	public void fall() {
+		seasons = "fall";
 		file = null;
 		bgImage = null;
 		image = null;
@@ -325,10 +272,19 @@ public class MainClassV4 extends SeasonsSimulation {
 		itemVelocity = -300;
 		itemPAngle = 0;
 		
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(new File("Leafs.ttf"))).deriveFont(Font.PLAIN, 48);
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		renderer = new TextRenderer(font, true, true);
+		
 		c = new Color(255,0,0);
 		mod = "B";
 		textInfo.clear();
-		for (int i = 0; i < itemCount; i++) {
+		for (int i = 0; i < itemCount - 100 ; i++) {
 			textInfo.add(randomTextInfo());
 		}
 		
@@ -339,31 +295,20 @@ public class MainClassV4 extends SeasonsSimulation {
 			e.printStackTrace();
 		}
 		bgImage = toBufferedImage(image);
-		
-		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("Leafs.ttf"));
-			font = font.deriveFont(12f);
-		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 
-		font = new Font("font", Font.PLAIN, 24);
-		
 		frame.setSize(873,700);
 	}
 
 	public void winter() {
+		seasons = "winter";
 		file = null;
 		bgImage = null;
 		image = null;
 		itemAngle = 0;
 		itemVelocity = -300;
 		itemPAngle = 0;
+		font = new Font("Arial", Font.PLAIN, 24);
+		renderer = new TextRenderer(font, true, true);
 		
 		c = new Color(230,230,230);
 		mod = "*";
@@ -384,7 +329,14 @@ public class MainClassV4 extends SeasonsSimulation {
   
   
 	public void moreItem() {
-		int numToAdd = (int) (textInfo.size() * 0.5f);
+		int numToAdd;
+		if(seasons.equals("fall")){
+			numToAdd = (int) (textInfo.size() * 0.25f);
+		}else{
+			numToAdd = (int) (textInfo.size() * 0.5f);
+		}
+		System.out.println(textInfo.size() + "-" + numToAdd);
+
 		if (numToAdd == 0)
 			numToAdd = 1;
 		for (int i = 0; i < numToAdd; i++) {
@@ -395,29 +347,18 @@ public class MainClassV4 extends SeasonsSimulation {
 	public void lessItem() {
 		if (textInfo.size() == 1)
 			return;
-		int numToRemove = textInfo.size() / 3;
+		int numToRemove;
+		if(seasons.equals("fall")){
+			numToRemove = textInfo.size() / 5;			
+		}else{
+			numToRemove = textInfo.size() / 3;
+		}
 		if (numToRemove == 0)
 			numToRemove = 1;
 		for (int i = 0; i < numToRemove; i++) {
 			textInfo.remove(textInfo.size() - 1);
 		}
 	}
-
-//	public int getDropShadowDistance() {
-//		return dropShadowDistance;
-//	}
-
-//	public int getMinDropShadowDistance() {
-//		return 1;
-//	}
-
-//	public int getMaxDropShadowDistance() {
-//		return 40;
-//	}
-
-//	public void setDropShadowDistance(int dist) {
-//		dropShadowDistance = dist;
-//	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
@@ -427,30 +368,20 @@ public class MainClassV4 extends SeasonsSimulation {
 		try {
 			image = ImageIO.read(file);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		bgImage = toBufferedImage(image);
 		
 		backgroundTexture = AWTTextureIO.newTexture(gl.getGLProfile(), bgImage, false);
 		backgroundTexture.bind(gl);
-		
 				
 		// Create the text renderer
 		renderer = new TextRenderer(font, true, true);
-
-		// Create the FPS counter
-		fps = new FPSCounter(drawable, 36);
-
+		
 		width = drawable.getSurfaceWidth();
 		height = drawable.getSurfaceHeight();
 
-		// Compute maximum width of text we're going to draw to avoid
-		// popping in/out at edges
-		//maxTextWidth = (int) renderer.getBounds("Java 2D").getWidth();
-		//maxTextWidth = Math.max(maxTextWidth, (int) renderer.getBounds("OpenGL").getWidth());
-
-		// Create random text
+		// Create random item
 		textInfo.clear();
 		for (int i = 0; i < itemCount; i++) {
 			textInfo.add(randomTextInfo());
@@ -459,9 +390,7 @@ public class MainClassV4 extends SeasonsSimulation {
 		time = new SystemTime();
 		((SystemTime) time).rebase();
 
-		// Set up properties; note we don't need the depth buffer in this demo
 		gl.glDisable(GL2.GL_DEPTH_TEST);
-		// Turn off vsync if we can
 		gl.setSwapInterval(0);
 	}
 
@@ -469,33 +398,29 @@ public class MainClassV4 extends SeasonsSimulation {
 	public void dispose(GLAutoDrawable drawable) {
 		backgroundTexture = null;
 		renderer = null;
-		fps = null;
 		time = null;
 	}
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		time.update();
-
 		// Update velocities and positions of all text
 		float deltaT = (float) time.deltaT();
 		Vec2f tmp = new Vec2f();
 		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
 			TextInfo info = iter.next();
-
 			// Randomize things a little bit at run time
-			/*
-			if (random.nextInt(1000) == 0) {
-				info.angularVelocity = INIT_ANG_VEL_MAG * (randomAngle() - 180);
-				info.velocity = randomVelocityVec2f(INIT_VEL_MAG, INIT_VEL_MAG);
+			if(seasons.equals("fall")){
+				if (random.nextInt(1000) == 0) {
+					info.angularVelocity = 0.3f * (randomAngle() - 180);
+					info.velocity = randomVelocityVec2f(400f, 400f);
+				}		
 			}
-*/
 			// Now update angles and positions
 			info.angle += info.angularVelocity * deltaT;
 			tmp.set(info.velocity);
 			tmp.scale(deltaT);
 			info.position.add(tmp);
-
 			// Update color
 			info.curTime += deltaT;
 			if (info.curTime > 2 * Math.PI) {
@@ -515,8 +440,7 @@ public class MainClassV4 extends SeasonsSimulation {
 				info.angle -= 360;
 			}
 			// Use maxTextWidth to avoid popping in/out at edges
-			// Would be better to do oriented bounding rectangle computation
-			
+			// Would be better to do oriented bounding rectangle computation			
 			if (info.position.x() < -10) {
 				info.position.setX(info.position.x() + drawable.getSurfaceWidth() + 0.9f * 50);
 			} else if (info.position.x() > drawable.getSurfaceWidth() + 50) {
@@ -535,8 +459,7 @@ public class MainClassV4 extends SeasonsSimulation {
 		gl.glLoadIdentity();
 		glu.gluOrtho2D(0, drawable.getSurfaceWidth(), 0, drawable.getSurfaceHeight());
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		
+		gl.glLoadIdentity();		
 		
 		// Draw the background texture
 		backgroundTexture.enable(gl);
@@ -544,8 +467,6 @@ public class MainClassV4 extends SeasonsSimulation {
 		TextureCoords coords = backgroundTexture.getImageTexCoords();
 		int w = drawable.getSurfaceWidth();
 		int h = drawable.getSurfaceHeight();
-//		float fw = w / 100.0f;
-//		float fh = h / 100.0f;
 		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(coords.left(),coords.bottom());
@@ -558,14 +479,9 @@ public class MainClassV4 extends SeasonsSimulation {
 		gl.glVertex3f(0, h, 0);
 		gl.glEnd();
 		backgroundTexture.disable(gl);
-
 		// Render all text
 		renderer.beginRendering(drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
-
-		// Note we're doing some slightly fancy stuff to position the text.
-		// We tell the text renderer to render the text at the origin, and
-		// manipulate the modelview matrix to put the text where we want.
-
+		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 
 		// First render drop shadows
@@ -573,8 +489,8 @@ public class MainClassV4 extends SeasonsSimulation {
 //		for (Iterator<TextInfo> iter = textInfo.iterator(); iter.hasNext(); ){
 //			TextInfo info = iter.next();
 //			gl.glLoadIdentity();
-//			gl.glTranslatef(info.position.x() + dropShadowDistance,
-//							info.position.y() - dropShadowDistance,
+//			gl.glTranslatef(info.position.x() + 1,
+//							info.position.y() - 1,
 //							0);
 //			gl.glRotatef(info.angle, 0, 0, 1);
 //			renderer.draw(info.text, 0, 0);
@@ -597,9 +513,6 @@ public class MainClassV4 extends SeasonsSimulation {
 		}
 
 		renderer.endRendering();
-
-		// Use the FPS renderer last to render the FPS
-		fps.draw();
 	}
 
 	@Override
@@ -618,17 +531,20 @@ public class MainClassV4 extends SeasonsSimulation {
 
 	private TextInfo randomTextInfo() {
 		TextInfo info = new TextInfo();
-		info.text = mod;
-		info.angle = itemPAngle;
-		info.position = randomVec2f(width, height);
+		if(seasons.equals("fall")){
+			info.text = randomString();
+			info.angle = randomAngle();
+			info.position = randomVec2f(width, height);
+		}else{
+			info.text = mod;
+			info.angle = itemPAngle;
+			info.position = randomVec2f(width, height);
+		}
 
-		info.angularVelocity = 0;//INIT_ANG_VEL_MAG * (randomAngle() - 180);
+		info.angularVelocity = 0;
 		info.velocity = new Vec2f(itemAngle,itemVelocity);
 		
-//		Color c = randomColor();
 		float[] hsb = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-
-//		float[] hsb = Color.RGBtoHSB(255, 255, 255, null);
 		info.h = hsb[0];
 		info.s = hsb[1];
 		info.v = hsb[2];
@@ -636,31 +552,31 @@ public class MainClassV4 extends SeasonsSimulation {
 		return info;
 	}
 
-//	private String randomString() {
-//		switch (random.nextInt(3)) {
-//			case 0:
-//				return "A";
-//			case 1:
-//				return "B";
-//			default:
-//				return "C";
-//		}
-//	}
+	private String randomString() {
+		switch (random.nextInt(8)) {
+			case 0:		return "B";
+			case 1:		return "C";
+			case 2:		return "W";
+			case 3:		return "R";
+			case 4:		return "Y";
+			case 5:		return "L";
+			case 6:		return "K";
+			case 7:		return "F";
+			default:	return "C";
+		}
+	}
 
-//	private float randomAngle() {
-//		return itemPAngle;
-//		//return 360.0f * random.nextFloat();
-//	}
+	private float randomAngle() {
+		return 360.0f * random.nextFloat();
+	}
 
 	private Vec2f randomVec2f(float x, float y) {
 		return new Vec2f(x * random.nextFloat(),y * random.nextFloat());
 	}
 
-//	private Vec2f randomVelocityVec2f(float x, float y) {
-//		//return new Vec2f(x * (random.nextFloat() - 0.5f),y * (random.nextFloat() - 0.5f));
-//		
-//		return new Vec2f(itemAngle,itemVelocity);
-//	}
+	private Vec2f randomVelocityVec2f(float x, float y) {
+		return new Vec2f(x * (random.nextFloat() - 0.5f),y * (random.nextFloat() - 0.5f));
+	}
 
 //	private Color randomColor() {
 //		// Get a bright and saturated color
@@ -683,15 +599,10 @@ public class MainClassV4 extends SeasonsSimulation {
 		if (img instanceof BufferedImage){
 			return (BufferedImage) img;
 		}
-		// Create a buffered image with transparency
 		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		// Draw the image on to the buffered image
 		Graphics2D bGr = bimage.createGraphics();
 		bGr.drawImage(img, 0, 0, null);
 		bGr.dispose();
-
-		// Return the buffered image
 		return bimage;
 	}
 }
