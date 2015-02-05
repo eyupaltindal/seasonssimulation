@@ -1,3 +1,5 @@
+Kocaeli Universitesi | BLM407 Bilgisayar Grafikleri Dersi Projesi
+
 Proje Konusu:
 Önceden belirlenmis bir manzara görüntüsünde farkli iklim kosullarinin OpenGL destekli gösterilmesidir.
 
