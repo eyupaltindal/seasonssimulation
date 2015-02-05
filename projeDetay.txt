@@ -1,15 +1,15 @@
 Proje Konusu:
-Önceden belirlenmis bir manzara görüntüsünde farkli iklim kosullarinin OpenGL destekli gösterilmesidir.
+Ã–nceden belirlenmis bir manzara gÃ¶rÃ¼ntÃ¼sÃ¼nde farkli iklim kosullarinin OpenGL destekli gÃ¶sterilmesidir.
 
-Arayüzde, 4 farkli mod olacaktir.
+ArayÃ¼zde, 4 farkli mod olacaktir.
 
-1. mod : Açik
+1. mod : AÃ§ik
 2. mod : Sis
 3. mod : Kar
 4. mod : Yagmur
 
-Kullanici hangi modu seçerse, o modun simülasyonu gerçeklestirilecektir. Kullanici 3. ve 4. modu seçerse ekranda Yagmur + Kar modunun gösterilmesi beklenmektedir.
+Kullanici hangi modu seÃ§erse, o modun simÃ¼lasyonu gerÃ§eklestirilecektir. Kullanici 3. ve 4. modu seÃ§erse ekranda Yagmur + Kar modunun gÃ¶sterilmesi beklenmektedir.
 
-Arayüz üzerinde, ilgili modun yogunlugunu ayarlayacak bir 'yogunluk ayar seviyesi' olacaktir. Örnegin, 1. mod seçilmisse ve ayar seviyesi en düsük seviyede ise gökyüzünde bulut olmayacaktir. Benzer sekilde kar yogunlugu, yagmur yogunlugu bu kontrol parametresi ile belirlenecektir.
+ArayÃ¼z Ã¼zerinde, ilgili modun yogunlugunu ayarlayacak bir 'yogunluk ayar seviyesi' olacaktir. Ã–rnegin, 1. mod seÃ§ilmisse ve ayar seviyesi en dÃ¼sÃ¼k seviyede ise gÃ¶kyÃ¼zÃ¼nde bulut olmayacaktir. Benzer sekilde kar yogunlugu, yagmur yogunlugu bu kontrol parametresi ile belirlenecektir.
 
-Projenin teslim tarihi ve projenin gerçeklestirilmesi ile ilgili düzenlemeler (iyilestirmeler) daha sonra belirlenecektir. Ne zaman peki? When?
+Projenin teslim tarihi ve projenin gerÃ§eklestirilmesi ile ilgili dÃ¼zenlemeler (iyilestirmeler) daha sonra belirlenecektir.
